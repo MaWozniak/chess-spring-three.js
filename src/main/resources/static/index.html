@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Chess Online</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+
+        body {
+            background-color: #ffffff;
+            margin: 0px;
+            height: 100%;
+            color: #edf2f8;
+            font-size: 20px;
+            line-height: 18px;
+            overflow: hidden;
+        }
+
+        #panel {
+            position: fixed;
+            width: 260px;
+            right: 0px;
+            padding: 20px;
+            height: 400px;
+            margin: auto;
+            font-size: 20px;
+        }
+
+        #myMove {
+            margin: auto;
+            font-size: 24px;
+        }
+
+        #myButton {
+            margin: 10px;
+            font-size: 20px;
+        }
+
+        #newGame {
+            margin: 10px;
+            font-size: 20px;
+        }
+
+
+    </style>
+
+    <script src="/app_js/three.js"></script>
+    <script src="/app_js/OrbitControls.js"></script>
+    <script src="/app_js/OBJLoader.js"></script>
+
+    <script src="/app_js/loading_objects.js"></script>
+    <script src="/app_js/3d_scene.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+<div id="panel">
+    <center>
+
+        <p> Chess Engine Online </p>
+
+        Your move:<br/>
+        <input type="text" name="move" id="myMove" autocomplete="off" spellcheck="false" autofocus/>
+        <br/><br/>
+
+        <input type="submit" id="myButton" value="Make move"/>
+
+        <input type="submit" id="newGame" value="New Game" onclick="location.reload();"/>
+
+    </center>
+
+</div>
+
+<div id="render">
+
+
+    <script>
+        var tableId = Math.round(Math.random() * 1000000);
+
+        $(document).ready(function () {
+
+
+            var send = function () {
+                var nextMove = $("#myMove").val();
+
+                $.get("/enter?enter=" + nextMove + "&tableId=" + tableId, function (data, status) {
+
+                    if((data.pos1_X===data.pos2_X)&&(data.pos1_Y===data.pos2_Y)){
+
+                        alert("It's not valid Move\nFor example: \"e2 e4\"\nRemember SPACE between!");
+
+                    } else {
+
+                        moveWhite(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece);
+                        //alert( JSON.stringify(data) );
+
+                        $.get("/?move=" + nextMove+ "&tableId=" + tableId, function (data, status) {
+
+                            moveBlack(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece);
+
+                        });
+
+                    }
+                });
+            };
+
+            $("#myMove").keyup(function(event) {
+                if (event.which === 13) {
+                    send()
+                }
+            });
+
+            $("#myButton").click(send);
+        });
+
+        //MyButton click + key code ENTER
+
+        // $(document).on("keypress",".keypressbutton",function(event) {
+        //     var keyCode = event.which || event.keyCode;
+        //     if (keyCode == 13) {
+        //         $("#myButton").click((function () {
+        //             var nextMove = $("#myMove").val();
+        //
+        //             $.get("/enter?enter=" + nextMove, function (data, status) {
+        //
+        //                 moveWhite(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece);
+        //                 //alert( JSON.stringify(data) );
+        //
+        //                 $.get("/?move=" + nextMove, function (data, status) {
+        //
+        //                     moveBlack(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece);
+        //
+        //                 });
+        //
+        //                 //   alert("It's not valid Move\nFor example: \"e2 e4\"\nRemember SPACE between!");
+        //
+        //             });
+        //
+        //         }));
+        //         return false;
+        //     }
+        // });
+
+        //three.js renderer -> 3d_scene.js
+        document.body.appendChild(renderer.domElement);
+
+        document.addEventListener('keydown', Keyboard, false);
+
+
+        //main functions:
+        function moveWhite(num, posX, posZ, capture) {
+
+            var temp_posX = white_piece[num].position.x;
+            var temp_posZ = white_piece[num].position.z;
+            var count = 0;
+
+            setIntervalX(function () {
+
+                white_piece[num].position.x -= (temp_posX - posX)/ 30;
+                white_piece[num].position.z += -(temp_posZ + posZ)/ 30;
+                //jump of a knight
+                if((num === 9)||(num === 14)){
+                    if (count < 15) {
+                        white_piece[num].position.y += 0.08;
+                    } else {
+                        white_piece[num].position.y -= 0.08;
+                    }
+                    ;
+                    count++;
+                }
+
+            }, 10, 30);
+
+            if(capture === true){
+
+                for(var i=0; i<19; i++){
+
+                    if((Math.round(black_piece[i].position.x) === posX)&&(Math.round(black_piece[i].position.z) === -posZ)){
+
+                        //black_piece[i].position.y += 0.5;
+                        takeBlack(i);
+                    }
+                }
+            }
+
+        }
+
+        function moveBlack(num, posX, posZ, capture) {
+
+            var temp_posX = black_piece[num].position.x;
+            var temp_posZ = black_piece[num].position.z;
+            var count = 0;
+
+            setIntervalX(function () {
+
+                black_piece[num].position.x -= (temp_posX - posX)/ 30;
+                black_piece[num].position.z += -(temp_posZ + posZ)/ 30;
+                //jump of a knight
+                if((num === 9)||(num === 14)){
+                    if (count < 15) {
+                        black_piece[num].position.y += 0.08;
+                    } else {
+                        black_piece[num].position.y -= 0.08;
+                    }
+                    ;
+                    count++;
+                }
+
+            }, 10, 30);
+
+            if(capture === true){
+
+                for(var i=0; i<19; i++){
+
+                    if((Math.round(white_piece[i].position.x) === posX)&&(Math.round(white_piece[i].position.z) === -posZ)){
+
+                        takeWhite(i);
+                    }
+                }
+            }
+
+        }
+
+        function takeWhite(num) {
+
+            var temp_posX = white_piece[num].position.x;
+            var temp_posZ = white_piece[num].position.z;
+
+            setIntervalX(function () {
+
+                white_piece[num].position.y += 5 / 30;
+                white_piece[num].position.x += -(temp_posX + 1)/ 300;
+                white_piece[num].position.z += -(temp_posZ + 1)/ 300;
+
+            }, 10, 30);
+
+            setTimeout(function () {
+
+                white_piece[num].position.y += 1000;
+
+            }, 300);
+        }
+
+        function takeBlack(num) {
+
+            var temp_posX = black_piece[num].position.x;
+            var temp_posZ = black_piece[num].position.z;
+
+            setIntervalX(function () {
+
+                black_piece[num].position.y += 5 / 30;
+                black_piece[num].position.x += -(temp_posX + 1)/ 300;
+                black_piece[num].position.z += -(temp_posZ + 1)/ 300;
+
+            }, 10, 30);
+
+            setTimeout(function () {
+
+                black_piece[num].position.y += 1000;
+
+            }, 300);
+        }
+
+
+
+        function moveWithUp2() {
+            //white_piece[num].position.set( -3.5, 0, posZ);
+
+            var num = 2;
+            var posZ = 4.5 - (document.getElementById('input_A').value);
+            var temp_pos = white_piece[num].position.z;
+            var count = 0;
+
+            setIntervalX(function () {
+
+                white_piece[num].position.z -= (temp_pos - posZ) / 60;
+                if (count < 30) {
+                    white_piece[num].position.y += 0.035;
+                } else {
+                    white_piece[num].position.y -= 0.035;
+                }
+                ;
+
+                count++;
+
+
+            }, 5, 60);
+
+        };
+
+        function moveWithUp(num, posZ) {
+            //white_piece[num].position.set( -3.5, 0, posZ);
+
+            var temp_pos = white_piece[num].position.z;
+            var count = 0;
+
+            setIntervalX(function () {
+
+                white_piece[num].position.z -= (temp_pos - posZ) / 60;
+                if (count < 30) {
+                    white_piece[num].position.y += 0.035;
+                } else {
+                    white_piece[num].position.y -= 0.035;
+                }
+                ;
+
+                count++;
+
+
+            }, 5, 60);
+
+        };
+
+
+        //interval in time calls n-times
+        function setIntervalX(callback, delay, repetitions) {
+            var x = 0;
+            var intervalID = window.setInterval(function () {
+
+                callback();
+
+                if (++x === repetitions) {
+                    window.clearInterval(intervalID);
+                }
+            }, delay);
+        }
+
+
+        //keybord moves
+        document.addEventListener('keydown', Keyboard, false);
+
+        function Keyboard() {
+
+            if (event.keyCode == 86) {//CAMERA RESET
+
+                controls.target.set( 4.5, 0, -4.5 );
+
+                camera.position.set( 4.5, 9, 5.25);
+
+                camera.rotation.x = -0.75;
+                camera.rotation.y = 0;
+                camera.rotation.z = 0;
+
+                controls.update();
+
+            }
+
+            if (event.keyCode == 13) {//jQuerry function
+
+            }
+
+        };
+
+
+    </script>
+
+</div>
+
+</body>
+</html>
