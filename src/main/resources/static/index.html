@@ -83,6 +83,8 @@
             var send = function () {
                 var nextMove = $("#myMove").val();
 
+                //add clear $("#myMove").val()
+
                 $.get("/enter?enter=" + nextMove + "&tableId=" + tableId, function (data, status) {
 
                     if((data.pos1_X===data.pos2_X)&&(data.pos1_Y===data.pos2_Y)){
