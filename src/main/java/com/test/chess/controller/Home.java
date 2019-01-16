@@ -29,6 +29,8 @@ public class Home {
 
         if (move != null) {
 
+            move=move.toLowerCase();
+
             Move GENERATED = algorithm.makeMove('B', 'b');
 
             algorithm.board().makeMove('B', GENERATED);
@@ -50,6 +52,8 @@ public class Home {
         }
 
         if (move != null) {
+
+            move=move.toLowerCase();
 
             Move ENTERED = new Move();
 
