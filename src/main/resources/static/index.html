@@ -83,7 +83,8 @@
             var send = function () {
                 var nextMove = $("#myMove").val();
 
-                //add clear $("#myMove").val()
+                //clear $("#myMove").val()
+                $("#myMove").val('');
 
                 $.get("/enter?enter=" + nextMove + "&tableId=" + tableId, function (data, status) {
 
