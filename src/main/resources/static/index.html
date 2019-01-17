@@ -94,12 +94,12 @@
 
                     } else {
 
-                        moveWhite(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece);
+                        moveWhite(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece, data.specialMove);
                         //alert( JSON.stringify(data) );
 
                         $.get("/?move=" + nextMove+ "&tableId=" + tableId, function (data, status) {
 
-                            moveBlack(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece);
+                            moveBlack(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece, data.specialMove);
 
                         });
 
@@ -116,33 +116,6 @@
             $("#myButton").click(send);
         });
 
-        //MyButton click + key code ENTER
-
-        // $(document).on("keypress",".keypressbutton",function(event) {
-        //     var keyCode = event.which || event.keyCode;
-        //     if (keyCode == 13) {
-        //         $("#myButton").click((function () {
-        //             var nextMove = $("#myMove").val();
-        //
-        //             $.get("/enter?enter=" + nextMove, function (data, status) {
-        //
-        //                 moveWhite(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece);
-        //                 //alert( JSON.stringify(data) );
-        //
-        //                 $.get("/?move=" + nextMove, function (data, status) {
-        //
-        //                     moveBlack(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece);
-        //
-        //                 });
-        //
-        //                 //   alert("It's not valid Move\nFor example: \"e2 e4\"\nRemember SPACE between!");
-        //
-        //             });
-        //
-        //         }));
-        //         return false;
-        //     }
-        // });
 
         //three.js renderer -> 3d_scene.js
         document.body.appendChild(renderer.domElement);
@@ -151,7 +124,7 @@
 
 
         //main functions:
-        function moveWhite(num, posX, posZ, capture) {
+        function moveWhite(num, posX, posZ, capture, specMove) {
 
             var temp_posX = white_piece[num].position.x;
             var temp_posZ = white_piece[num].position.z;
@@ -186,9 +159,45 @@
                 }
             }
 
+            if (specMove === 1) {
+
+                count = 0;
+
+                setIntervalX(function () {
+
+                    white_piece[15].position.x -= 2 / 30;
+
+                    if (count < 15) {
+                        white_piece[15].position.z += 0.08;
+                    } else {
+                        white_piece[15].position.z -= 0.08;
+                    }
+                    ;
+                    count++;
+                }, 10, 30);
+            }
+
+            if (specMove === 2) {
+
+                count = 0;
+
+                setIntervalX(function () {
+
+                    white_piece[8].position.x -= -3 / 30;
+
+                    if (count < 15) {
+                        white_piece[8].position.z += 0.08;
+                    } else {
+                        white_piece[8].position.z -= 0.08;
+                    }
+                    ;
+                    count++;
+                }, 10, 30);
+            }
+
         }
 
-        function moveBlack(num, posX, posZ, capture) {
+        function moveBlack(num, posX, posZ, capture, specMove) {
 
             var temp_posX = black_piece[num].position.x;
             var temp_posZ = black_piece[num].position.z;
@@ -220,6 +229,42 @@
                         takeWhite(i);
                     }
                 }
+            }
+
+            if (specMove === 3) {
+
+                count = 0;
+
+                setIntervalX(function () {
+
+                    black_piece[15].position.x -= 2 / 30;
+
+                    if (count < 15) {
+                        black_piece[15].position.z += 0.08;
+                    } else {
+                        black_piece[15].position.z -= 0.08;
+                    }
+                    ;
+                    count++;
+                }, 10, 30);
+            }
+
+            if (specMove === 4) {
+
+                count = 0;
+
+                setIntervalX(function () {
+
+                    black_piece[8].position.x -= -3 / 30;
+
+                    if (count < 15) {
+                        black_piece[8].position.z += 0.08;
+                    } else {
+                        black_piece[8].position.z -= 0.08;
+                    }
+                    ;
+                    count++;
+                }, 10, 30);
             }
 
         }

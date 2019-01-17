@@ -5,7 +5,7 @@ function load_all() {
 
 
 //objects: board:
-loader.load('/objects/board_white.obj',function ( object ) {
+    loader.load('/objects/board_white_num.obj', function (object) {
           obj_boardA = object;
           obj_boardA.traverse( function ( obj ) {
               if ( obj.isMesh ) obj.material = mat_B_white;
@@ -15,7 +15,7 @@ loader.load('/objects/board_white.obj',function ( object ) {
           function ( xhr ) {console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );},
           function ( error ) {console.log( 'An error happened' );}
 );
-loader.load('/objects/board_black.obj',function ( object ) {
+    loader.load('/objects/board_black_num.obj', function (object) {
           obj_boardB = object;
           obj_boardB.traverse( function ( obj ) {
               if ( obj.isMesh ) obj.material = mat_B_dark;
