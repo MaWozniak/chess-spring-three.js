@@ -163,7 +163,9 @@
 
                 count = 0;
 
-                setIntervalX(function () {
+                setTimeout(function () {
+
+                    setIntervalX(function () {
 
                     white_piece[15].position.x -= 2 / 30;
 
@@ -172,16 +174,19 @@
                     } else {
                         white_piece[15].position.z -= 0.08;
                     }
-                    ;
                     count++;
                 }, 10, 30);
+
+                }, 200);
             }
 
             if (specMove === 2) {
 
                 count = 0;
 
-                setIntervalX(function () {
+                setTimeout(function () {
+
+                    setIntervalX(function () {
 
                     white_piece[8].position.x -= -3 / 30;
 
@@ -190,9 +195,10 @@
                     } else {
                         white_piece[8].position.z -= 0.08;
                     }
-                    ;
                     count++;
                 }, 10, 30);
+
+                }, 200);
             }
 
         }
@@ -235,36 +241,42 @@
 
                 count = 0;
 
-                setIntervalX(function () {
+                setTimeout(function () {
+
+                    setIntervalX(function () {
 
                     black_piece[15].position.x -= 2 / 30;
 
                     if (count < 15) {
-                        black_piece[15].position.z += 0.08;
-                    } else {
                         black_piece[15].position.z -= 0.08;
+                    } else {
+                        black_piece[15].position.z += 0.08;
                     }
-                    ;
                     count++;
                 }, 10, 30);
+
+                }, 200);
             }
 
             if (specMove === 4) {
 
                 count = 0;
 
-                setIntervalX(function () {
+                setTimeout(function () {
+
+                    setIntervalX(function () {
 
                     black_piece[8].position.x -= -3 / 30;
 
                     if (count < 15) {
-                        black_piece[8].position.z += 0.08;
-                    } else {
                         black_piece[8].position.z -= 0.08;
+                    } else {
+                        black_piece[8].position.z += 0.08;
                     }
-                    ;
                     count++;
                 }, 10, 30);
+
+                }, 200);
             }
 
         }
