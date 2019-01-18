@@ -79,7 +79,6 @@ mat_dark.metalness = 0.55;
 var mat_B_white = new THREE.MeshStandardMaterial({color: 0xcccccc});
 
 var mat_B_dark = new THREE.MeshStandardMaterial({color: 0x808080});
-//var mat_B_dark = new THREE.MeshStandardMaterial( { color: 0x664019 } );
 
 //end of materials
 
