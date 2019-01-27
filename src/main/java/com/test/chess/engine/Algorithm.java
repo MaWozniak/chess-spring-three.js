@@ -28,7 +28,7 @@ public class Algorithm {
 
         DepthBuild(4, color, version);
 
-        Randomness(0.028);
+        Randomness(0.01);
         Sort(4);
 
         return Decision();
