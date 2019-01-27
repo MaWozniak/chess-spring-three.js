@@ -28,7 +28,7 @@ public class Algorithm {
 
         DepthBuild(4, color, version);
 
-        Randomness(0.008);
+        Randomness(0.028);
         Sort(4);
 
         return Decision();
@@ -103,7 +103,7 @@ public class Algorithm {
         //Removing sequences with Check or Checkmate
 
         for (int i = sequences.size() - 1; i >= 0; i--) {
-            if (sequences.get(i).check || sequences.get(i).checkmate) {
+            if (sequences.get(i).check) {
                 sequences.remove(i);
             }
         }

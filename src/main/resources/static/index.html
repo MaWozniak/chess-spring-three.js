@@ -179,14 +179,18 @@
 
             if(capture === true){
 
-                for(var i=0; i<19; i++){
+                setTimeout(function () {
 
-                    if((Math.round(black_piece[i].position.x) === posX)&&(Math.round(black_piece[i].position.z) === -posZ)){
+                    for(var i=0; i<19; i++){
 
-                        //black_piece[i].position.y += 0.5;
-                        takeBlack(i);
+                        if((Math.round(black_piece[i].position.x) === posX)&&(Math.round(black_piece[i].position.z) === -posZ)){
+
+                            //black_piece[i].position.y += 0.5;
+                            takeBlack(i);
+                        }
                     }
-                }
+
+                }, 1);
             }
 
             if (specMove === 1) {
@@ -258,13 +262,17 @@
 
             if(capture === true){
 
-                for(var i=0; i<19; i++){
+                setTimeout(function () {
 
-                    if((Math.round(white_piece[i].position.x) === posX)&&(Math.round(white_piece[i].position.z) === -posZ)){
+                    for(var i=0; i<19; i++){
 
-                        takeWhite(i);
+                        if((Math.round(white_piece[i].position.x) === posX)&&(Math.round(white_piece[i].position.z) === -posZ)){
+
+                            takeWhite(i);
+                        }
                     }
-                }
+
+                }, 1);
             }
 
             if (specMove === 3) {
