@@ -59,9 +59,12 @@
 
         <p> Chess Engine Online </p>
 
-        Your move:<br/>
+        <p>Your move:</p>
+
         <input type="text" name="move" id="myMove" autocomplete="off" spellcheck="false" autofocus/>
-        <br/><br/>
+
+        <p>For example: "a2 a3"</p>
+        <p>"e2 e4" "g1 f3" etc.</p>
 
         <input type="submit" id="myButton" value="Make move"/>
 
@@ -408,6 +411,7 @@
             if (event.keyCode == 73) {
 
                 alert("tableID: " + tableId);
+                $("#myMove").val('');
             }
 
         }
