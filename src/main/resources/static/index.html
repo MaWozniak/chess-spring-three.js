@@ -78,7 +78,10 @@
 
 
     <script>
+
         var tableId = Math.round(Math.random() * 1000000);
+
+        var gameEnds = 0;
 
         $(document).ready(function () {
 
@@ -93,7 +96,13 @@
 
                     if((data.pos1_X===data.pos2_X)&&(data.pos1_Y===data.pos2_Y)){
 
-                        alert("It's not valid Move\nFor example: \"e2 e4\"\nRemember SPACE between!");
+                        if (gameEnds === 0) {
+                            alert("It's not valid Move, or it is Check\nFor example: \"e2 e4\"\nRemember SPACE between!");
+                        } else if (gameEnds === 1) {
+                            alert("Game ends - White checkmate Black");
+                        } else if (gameEnds === 2) {
+                            alert("Game ends - Black checkmate White");
+                        }
 
                     } else {
 
@@ -102,7 +111,25 @@
 
                         $.get("/?move=" + nextMove+ "&tableId=" + tableId, function (data, status) {
 
+                            if (JSON.stringify(data.specialMove) === "100") {
+
+                                setTimeout(function () {
+                                    alert("Checkmate\n\nCongratulations - White Wins!");
+                                }, 1000);
+                                gameEnds = 1;
+
+                            }
+
                             moveBlack(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece, data.specialMove);
+
+                            if (JSON.stringify(data.checkmate) === "true") {
+
+                                setTimeout(function () {
+                                    alert("Checkmate - Black Wins");
+                                }, 1000);
+                                gameEnds = 2;
+
+                            }
 
                         });
 

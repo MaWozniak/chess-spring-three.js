@@ -18,7 +18,6 @@ public class Home {
 
     @GetMapping("/")
     public Move comp(@RequestParam(value="move", required=false) String move, @RequestParam("tableId") String tableId) {
-        //algorithm.board().copyBoard(testBoards.test0);
 
         Algorithm algorithm = algorithms.get(tableId);
 
@@ -43,7 +42,7 @@ public class Home {
 
     @GetMapping("/enter")
     public Move comp2(@RequestParam(value="enter", required=false) String move, @RequestParam("tableId") String tableId) {
-        //algorithm.board().copyBoard(testBoards.test0);
+
         Algorithm algorithm = algorithms.get(tableId);
 
         if (algorithm == null) {
@@ -57,26 +56,22 @@ public class Home {
 
             Move ENTERED = new Move();
 
-            algorithm.board().generateMoves('W', 1);
+            algorithm.GenerateSequences('W');
+            algorithm.CheckCheckmate('W');
+            algorithm.RemoveCheckmates();
 
-            for (int i = 0; i < algorithm.board().getMovesDepth1().size(); i++) {
+            if (move.length() >= 5) {
 
-                if ((algorithm.board().getMovesDepth1().get(i).getPos1_X() == move.charAt(0) - 96) && (algorithm.board().getMovesDepth1().get(i).getPos1_Y() == move.charAt(1) - 48)
-                        && (algorithm.board().getMovesDepth1().get(i).getPos2_X() == move.charAt(3) - 96) && (algorithm.board().getMovesDepth1().get(i).getPos2_Y() == move.charAt(4) - 48)) {
-                    ENTERED = algorithm.board().getMovesDepth1().get(i);
+                for (int i = 0; i < algorithm.sequences.size(); i++) {
 
-                    algorithm.board().makeMove('W', ENTERED);
+                    if ((algorithm.sequences.get(i).move(0).getPos1_X() == move.charAt(0) - 96) && (algorithm.sequences.get(i).move(0).getPos1_Y() == move.charAt(1) - 48)
+                            && (algorithm.sequences.get(i).move(0).getPos2_X() == move.charAt(3) - 96) && (algorithm.sequences.get(i).move(0).getPos2_Y() == move.charAt(4) - 48)) {
+                        ENTERED = algorithm.sequences.get(i).move(0);
+
+                        algorithm.board().makeMove('W', ENTERED);
+                    }
                 }
             }
-
-//            if(ENTERED.getCapturePiece()){
-//                for(int i=0; i<19; i++){
-//                    if((algorithm.board().blackPieces[i].getPosX() == move.charAt(3) - 96)
-//                            && (algorithm.board().blackPieces[i].getPosY() == move.charAt(4) - 48)){
-//                        ENTERED.setCaptureIndex(i);
-//                    }
-//                }
-//            }
 
             return ENTERED;
         }

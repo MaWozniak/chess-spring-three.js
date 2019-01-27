@@ -3,15 +3,24 @@ package com.test.chess.engine;
 import java.util.ArrayList;
 
 public class Move
-        //maximum simplycity
+        //maximum siplycity
 {
     private int pieceIndex = 0;
     private int pos1_X = 0;
     private int pos1_Y = 0;
     private int pos2_X = 0;
     private int pos2_Y = 0;
-    private boolean capturePiece = false;
+    private boolean capture = false;
     private int specialMove = 0;
+    private boolean checkmate = false;
+
+    //algorithm
+    public double worthDepth4 = 0.0;
+    public double bestBeta4 = 0.0;
+    public double avrgBeta4 = 0.0;
+
+    public double worthDepth8 = 0.0;
+    public double bestBeta8 = 0.0;
 
     //sequence
     public ArrayList<Move> sequence = new ArrayList<>(); //depth 1-4
@@ -22,7 +31,8 @@ public class Move
         this.pos1_Y = Y1;
         this.pos2_X = X2;
         this.pos2_Y = Y2;
-        this.capturePiece = takePiece;
+        this.capture = takePiece;
+        this.checkmate = false;
     }
 
     public Move(int piece, int X1, int Y1, int X2, int Y2, boolean takePiece, int specialMove) {
@@ -31,8 +41,9 @@ public class Move
         this.pos1_Y = Y1;
         this.pos2_X = X2;
         this.pos2_Y = Y2;
-        this.capturePiece = takePiece;
+        this.capture = takePiece;
         this.specialMove = specialMove;
+        this.checkmate = false;
     }
 
     public Move() {
@@ -59,20 +70,15 @@ public class Move
     }
 
     public boolean getCapturePiece() {
-        return this.capturePiece;
+        return this.capture;
     }
-
 
     public int getSpecialMove() {
         return this.specialMove;
     }
 
     public void introduce() {
-        System.out.print(" p-" + (this.pieceIndex + 1) + "  " + (char) (this.pos1_X + 96) + this.pos1_Y + " - " + (char) (this.pos2_X + 96) + this.pos2_Y + "  " + this.capturePiece);
-    }
-
-    public String moveToString() {
-        return (" " + (char) (this.pos1_X + 96) + this.pos1_Y + " " + (char) (this.pos2_X + 96) + this.pos2_Y);
+        System.out.print(" p-" + (this.pieceIndex + 1) + "  " + (char) (this.pos1_X + 96) + this.pos1_Y + " - " + (char) (this.pos2_X + 96) + this.pos2_Y + "  " + this.capture);
     }
 
     public void introduceShort() {
@@ -83,6 +89,14 @@ public class Move
         for (int i = 0; i < this.sequence.size(); i++) {
             this.sequence.get(i).introduceShort();
         }
+    }
+
+    public boolean getCheckmate() {
+        return checkmate;
+    }
+
+    public void setCheckmate() {
+        this.checkmate = true;
     }
 
     public String pieceInitial() {
@@ -104,5 +118,6 @@ public class Move
         }
         return initial;
     }
+
 
 }
