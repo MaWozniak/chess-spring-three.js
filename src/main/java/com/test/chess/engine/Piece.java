@@ -186,13 +186,15 @@ public class Piece
             //Whites score:
             if (this.color == 'W') {
                 //Position - center
-                if ((this.posX > 2 && this.posX < 7) && ((this.posY == 3) || (this.posY == 4)))
-                { value += 0.001; }
+                if ((this.posX > 2 && this.posX < 7) && ((this.posY == 3) || (this.posY == 4))) {
+                    value += 0.001;
+                } // ?:0.005 - agresiveness play
                 //Position - strict center
-                if ((this.posX == 4 || this.posX == 5) && ((this.posY == 4) || (this.posY == 5)))
-                { value += 0.002; }
+                if ((this.posX == 4 || this.posX == 5) && ((this.posY == 4) || (this.posY == 5))) {
+                    value += 0.002;
+                } // ?:0.02
                 //Position - moving foward
-                value += ((this.posY-2.0)/1000.0);
+                value += ((this.posY - 2.0) / 1000.0);  // ?:.../5000
                 //Position - close to last line (2 lines)
                 if (this.posY == 6) { value += 0.01; }
                 //Position - close to last line (1 line)

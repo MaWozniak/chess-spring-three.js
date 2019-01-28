@@ -109,29 +109,33 @@
                         moveWhite(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece, data.specialMove);
                         //alert( JSON.stringify(data) );
 
-                        $.get("/?move=" + nextMove+ "&tableId=" + tableId, function (data, status) {
+                        setTimeout(function () {
 
-                            if (JSON.stringify(data.specialMove) === "100") {
+                            $.get("/?move=" + nextMove+ "&tableId=" + tableId, function (data, status) {
 
-                                setTimeout(function () {
-                                    alert("Checkmate\n\nCongratulations - White Wins!");
-                                }, 1000);
-                                gameEnds = 1;
+                                if (JSON.stringify(data.specialMove) === "100") {
 
-                            }
+                                    setTimeout(function () {
+                                        alert("Checkmate\n\nCongratulations - White Wins!");
+                                    }, 1000);
+                                    gameEnds = 1;
 
-                            moveBlack(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece, data.specialMove);
+                                }
 
-                            if (JSON.stringify(data.checkmate) === "true") {
+                                moveBlack(data.pieceIndex, data.pos2_X, data.pos2_Y, data.capturePiece, data.specialMove);
 
-                                setTimeout(function () {
-                                    alert("Checkmate - Black Wins");
-                                }, 1000);
-                                gameEnds = 2;
+                                if (JSON.stringify(data.checkmate) === "true") {
 
-                            }
+                                    setTimeout(function () {
+                                        alert("Checkmate - Black Wins");
+                                    }, 1000);
+                                    gameEnds = 2;
 
-                        });
+                                }
+
+                            });
+
+                        }, 100);
 
                     }
                 });
@@ -179,8 +183,6 @@
 
             if(capture === true){
 
-                setTimeout(function () {
-
                     for(var i=0; i<19; i++){
 
                         if((Math.round(black_piece[i].position.x) === posX)&&(Math.round(black_piece[i].position.z) === -posZ)){
@@ -189,8 +191,6 @@
                             takeBlack(i);
                         }
                     }
-
-                }, 1);
             }
 
             if (specMove === 1) {
@@ -262,17 +262,13 @@
 
             if(capture === true){
 
-                setTimeout(function () {
+                for (var i = 0; i < 19; i++) {
 
-                    for(var i=0; i<19; i++){
+                    if ((Math.round(white_piece[i].position.x) === posX) && (Math.round(white_piece[i].position.z) === -posZ)) {
 
-                        if((Math.round(white_piece[i].position.x) === posX)&&(Math.round(white_piece[i].position.z) === -posZ)){
-
-                            takeWhite(i);
-                        }
+                        takeWhite(i);
                     }
-
-                }, 1);
+                }
             }
 
             if (specMove === 3) {

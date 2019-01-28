@@ -15,6 +15,8 @@ public class Algorithm {
 
     private Board board = new Board();
 
+    private int countMove = 0;
+
     public Algorithm() {
     }
 
@@ -28,8 +30,11 @@ public class Algorithm {
 
         DepthBuild(4, color, version);
 
-        Randomness(0.01);
+        Randomness(0.02, 0.002, 0.001);
+
         Sort(4);
+
+        countMove += 1;
 
         return Decision();
     }
@@ -177,11 +182,22 @@ public class Algorithm {
         }
     }
 
-    public void Randomness(double size) {
+    public void Randomness(double firstmove, double second, double game) {
 
-        for (int i = 0; i < sequences.size(); i++) {
-            sequences.get(i).worthDepth4 += (Math.random() - 0.5) * size;
+        if (countMove == 0) {
+            for (int i = 0; i < sequences.size(); i++) {
+                sequences.get(i).worthDepth4 += (Math.random() - 0.5) * firstmove;
+            }
+        } else if (countMove == 1) {
+            for (int i = 0; i < sequences.size(); i++) {
+                sequences.get(i).worthDepth4 += (Math.random() - 0.5) * second;
+            }
+        } else {
+            for (int i = 0; i < sequences.size(); i++) {
+                sequences.get(i).worthDepth4 += (Math.random() - 0.5) * game;
+            }
         }
+
     }
 
     public void DepthBuild(int depth, char side, char version) {
